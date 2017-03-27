@@ -36,6 +36,9 @@ RDF N-Quad allows specifying the language for string values, using `@lang`. Usin
 <0x01> <name> "Алисия"@ru .
 <0x01> <name> "Adélaïde"@fr .
 ```
+To specify the language of the value to be returned from query `@lang1:lang2:lang3` notation is used. It is extension over RDF N-Quad syntax, and allows specifying multiple languages in order of preference. If value in given language is not found, next language from list is considered. If there are no values in any of specified languages, the value without specified language is returned. At last, if there is no value without language, value in ''some'' language is returned (this is implementation specific).
+
+{{ Note | Languages preference list cannot be used in functions.}}
 
 ### Batch mutations
 
@@ -372,7 +375,7 @@ name: string @index(exact)
 Each graph edge is unidirectional. It points from one node to another. A lot of times,  you wish to access data in both directions, forward and backward. Instead of having to send edges in both directions, you can use the `@reverse` keyword at the end of a uid (entity) field declaration in the schema. This specifies that the reverse edge should be automatically generated. For example, if we want to add a reverse edge for `directed_by` predicate, we should have a schema as follows.
 
 ```
-name.en: string @index
+name: string @index
 directed_by: uid @reverse
 ```
 
@@ -828,7 +831,7 @@ curl localhost:8080/query -XPOST -d $'{
 }' | python -m json.tool | less
 ```
 
-`allofterms` tells Dgraph that the matching films' `name.en` have to contain both the words "indiana" and "jones". Here is the response.
+`allofterms` tells Dgraph that the matching films' `name` have to contain both the words "indiana" and "jones". Here is the response.
 
 ```
 {
